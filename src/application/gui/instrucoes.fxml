@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane maxWidth="847.0" prefHeight="583.0" prefWidth="837.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1">
+   <content>
+      <AnchorPane maxHeight="-Infinity" maxWidth="847.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="909.0" prefWidth="847.0">
+         <children>
+            <Label layoutX="11.0" layoutY="8.0" text="1 - Quadro de vagas" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="29.0" prefHeight="34.0" prefWidth="281.0" text="Crie um arquivo excel com as seguintes colunas:" wrapText="true" />
+            <Label layoutX="55.0" layoutY="60.0" prefHeight="17.0" prefWidth="109.0" text=" - Contrato interno" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="165.0" layoutY="60.0" prefHeight="17.0" prefWidth="206.0" text="(contrato interno para emissão da NF)" wrapText="true" />
+            <Label layoutX="55.0" layoutY="82.0" prefHeight="17.0" prefWidth="50.0" text=" - Rateio" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="109.0" layoutY="82.0" prefHeight="17.0" prefWidth="295.0" text="(nome do posto para cliente, ou controle de emissão)" wrapText="true" />
+            <Label layoutX="55.0" layoutY="101.0" prefHeight="21.0" prefWidth="50.0" text=" - Posto" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="103.0" layoutY="103.0" prefHeight="10.0" prefWidth="281.0" text="(nome do posto igual ao relatório 825 e nexti)" wrapText="true" />
+            <Label layoutX="55.0" layoutY="122.0" prefHeight="21.0" prefWidth="109.0" text=" - Nome do cargo" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="160.0" layoutY="124.0" prefHeight="10.0" prefWidth="281.0" text="(para facilitar visualização, nome do cargo da OS)" wrapText="true" />
+            <Label layoutX="55.0" layoutY="143.0" prefHeight="17.0" prefWidth="101.0" text=" - Valor do posto" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="156.0" layoutY="143.0" prefHeight="17.0" prefWidth="134.0" text="(valor vigênte do posto)" wrapText="true" />
+            <Label layoutX="55.0" layoutY="162.0" prefHeight="17.0" prefWidth="134.0" text=" - Quantidade de vagas" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="193.0" layoutY="162.0" prefHeight="17.0" prefWidth="231.0" text="(quantidade de vagas disponiveis no total)" wrapText="true" />
+            <Label layoutX="34.0" layoutY="183.0" prefHeight="34.0" prefWidth="281.0" text="Exemplo:" wrapText="true" />
+            <ImageView fitHeight="219.0" fitWidth="870.0" layoutX="14.0" layoutY="214.0" preserveRatio="true">
+               <image>
+                  <Image url="@../imgs/exquadrodevagas.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="53.0" layoutY="442.0" prefHeight="17.0" prefWidth="51.0" text="- Salvar" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="12.0" />
+               </font>
+            </Label>
+            <Label layoutX="102.0" layoutY="442.0" prefHeight="17.0" prefWidth="265.0" text="no formado CSV (separado por vírgulas) (*.csv&quot;)" wrapText="true" />
+            <Separator layoutY="472.0" prefHeight="4.0" prefWidth="870.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label layoutX="14.0" layoutY="481.0" text="2 - Colaboradores Lotados" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="509.0" prefHeight="17.0" prefWidth="490.0" text="No sistema QL, gere o relatório 825 com período e filiais necessárias." wrapText="true" />
+            <Label layoutX="34.0" layoutY="534.0" prefHeight="17.0" prefWidth="345.0" text="Salve o arquivo em .xlsx em algum diretório de sua preferencia." wrapText="true" />
+            <Label layoutX="34.0" layoutY="559.0" prefHeight="13.0" prefWidth="500.0" text="Abra o arquivo salvo pelo Excel, e o salve no formado CSV (separado por vírgulas) (*.csv&quot;)" wrapText="true" />
+            <Separator layoutX="-1.0" layoutY="595.0" prefHeight="4.0" prefWidth="870.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label layoutX="14.0" layoutY="605.0" text="3 - Ocorrências" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="637.0" prefHeight="17.0" prefWidth="490.0" text="No sistema Gestão de Pessoas (ruby), gere o relatório 130 com período e filiais necessárias." wrapText="true" />
+            <Label layoutX="34.0" layoutY="662.0" prefHeight="16.0" prefWidth="375.0" text="Salve o arquivo em .xlsx em algum diretório de sua preferencia." wrapText="true" />
+            <Label layoutX="34.0" layoutY="687.0" prefHeight="13.0" prefWidth="500.0" text="Abra o arquivo salvo pelo Excel, e o salve no formado CSV (separado por vírgulas) (*.csv&quot;)" wrapText="true" />
+            <Separator layoutX="-1.0" layoutY="725.0" prefHeight="4.0" prefWidth="870.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label layoutX="14.0" layoutY="737.0" text="4 - Coberturas" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="34.0" layoutY="769.0" prefHeight="17.0" prefWidth="490.0" text="Receba a planilha de coberturas enviadas pelo NEXTI" wrapText="true" />
+            <Label layoutX="34.0" layoutY="794.0" prefHeight="16.0" prefWidth="375.0" text="Salve o arquivo em .xlsx em algum diretório de sua preferencia." wrapText="true" />
+            <Label layoutX="34.0" layoutY="819.0" prefHeight="13.0" prefWidth="500.0" text="Abra o arquivo salvo pelo Excel, e o salve no formado CSV (separado por vírgulas) (*.csv&quot;)" wrapText="true" />
+            <Separator layoutY="846.0" prefHeight="4.0" prefWidth="870.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
+            <Label layoutX="13.0" layoutY="855.0" text="5 - Leitura e escrita dos dados" wrapText="true">
+               <font>
+                  <Font name="System Bold" size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="33.0" layoutY="887.0" prefHeight="17.0" prefWidth="759.0" text="Nesta aplicação, indique os caminhos de cada aquivo bem como o arquivo para compilação dos dados, e clique no botão &quot;EXECUTAR&quot;" wrapText="true" />
+         </children>
+      </AnchorPane>
+   </content>
+</ScrollPane>

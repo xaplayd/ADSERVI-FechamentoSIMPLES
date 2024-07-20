@@ -1,4 +1,4 @@
-package application;
+package services;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -9,6 +9,11 @@ import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
 import java.util.List;
+
+import entities.Coberturas;
+import entities.Lotacao;
+import entities.Ocorrencias;
+import entities.Vagas;
 
 public class Execution {
 
@@ -328,10 +333,14 @@ public class Execution {
 	/* FIM DA LEITURA DAS COBERTURAS */
 	
 	/* INICIO DA ESCRITA CONSOLIDADA */
-	public void consolidar(List listaDeVagas, List listaDeLotacao, List listaDeOcorrencias, List listaDeCoberturas) {
-	
-	
+	public void consolidar(String caminhoVagas, String caminhoLotacao, String caminhoOcorrencias, String caminhoCoberturas, String caminhoSalvarEm) {
 		
+		List<Vagas> listaVagas = lerVagas(caminhoVagas);
+		List<Lotacao> listaLotacao = lerLotacao(caminhoLotacao);
+		List<Ocorrencias> listaOcorrencia = lerOcorrencias(caminhoOcorrencias);
+		List<Coberturas> listaCobertura = lerCoberturas(caminhoCoberturas);
+	
+	
 	}
 	/* FIM DA ESCRITA CONSOLIDADA */
 }

@@ -17,7 +17,7 @@ public class Main extends Application {
 		try {
 			Parent root = FXMLLoader.load(getClass().getResource("/application/gui/magic.fxml"));
 			primaryStage.setTitle("FECHAMENTO");
-			primaryStage.getIcons().add(new Image("/application/logo2.png"));
+			primaryStage.getIcons().add(new Image("/application/imgs/logo2.png"));
 			primaryStage.setScene(new Scene(root));
 			primaryStage.setResizable(false);
 			primaryStage.show();

@@ -2,9 +2,11 @@ package application.gui;
 
 import java.io.File;
 
-import application.Execution;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -12,6 +14,7 @@ import javafx.scene.image.Image;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import services.Execution;
 
 public class MagicController {
 
@@ -48,7 +51,10 @@ public class MagicController {
 	private Button btnSalvarEm;
 
 	@FXML
-	private Button btnFacaMagica;
+	private Button btnExecutar;
+
+	@FXML
+	private Button btnInstrucoes;
 
 	@FXML
 	public void btnVagasOnAction(ActionEvent event) {
@@ -117,7 +123,7 @@ public class MagicController {
 	}
 
 	@FXML
-	public void btnFacaMagicaOnAction(ActionEvent event) {
+	public void btnExecutarOnAction(ActionEvent event) {
 
 		if (tfVagas.getText() == "" && tfLotacao.getText() == "" && tfOcorrencias.getText() == ""
 				&& tfCoberturas.getText() == "") {
@@ -134,12 +140,23 @@ public class MagicController {
 			alerta.showAndWait();
 
 		} else {
-			executar.lerVagas(tfVagas.getText());
-			executar.lerLotacao(tfLotacao.getText());
-			executar.lerOcorrencias(tfOcorrencias.getText());
-			executar.lerCoberturas(tfCoberturas.getText());
-			//executar.consolidar(tfSalvarEm.getText());
+			executar.consolidar(tfVagas.getText(), tfLotacao.getText(), tfOcorrencias.getText(), tfCoberturas.getText(), tfSalvarEm.getText());
+		}
 
+	}
+
+	@FXML
+	public void btnIntrucoesOnAction(ActionEvent event) {
+		try {
+			Stage intrucoes = new Stage();
+			Parent root = FXMLLoader.load(getClass().getResource("/application/gui/instrucoes.fxml"));
+			intrucoes.setTitle("Instruções");
+			intrucoes.getIcons().add(new Image("/application/imgs/logo2.png"));
+			intrucoes.setScene(new Scene(root));
+			intrucoes.show();
+
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 
 	}
