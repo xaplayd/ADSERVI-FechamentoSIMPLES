@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.List;
 import java.util.Objects;
 
 public class Vagas {
@@ -7,17 +8,39 @@ public class Vagas {
 	private Integer ctoInt;
 	private String rateio;
 	private String posto;
+	private String cargo;
 	private Double valor;
 	private Integer qtdPosto;
+	private Lotacao colaboradorVinculado;
+	private List<Ocorrencias> ocorrenciasVinculadas;
+	private List<Coberturas> coberturasVinculadas;
 	
-	public Vagas(Integer ctoInt, String rateio, String posto, Double valor, Integer qtdPosto) {
+	public Vagas(Integer ctoInt, String rateio, String posto, String cargo, Double valor, Integer qtdPosto) {
 
 		this.ctoInt = ctoInt;
 		this.rateio = rateio;
 		this.posto = posto;
+		this.cargo = cargo;
 		this.valor = valor;
 		this.qtdPosto = qtdPosto;
 	}
+	
+	public void setColaborador(Lotacao colaborador) {
+		this.colaboradorVinculado = colaborador;
+	}
+	
+	public Lotacao getColaborador() {
+		return colaboradorVinculado;
+	}
+	
+	public void adicionaOcorrencia(Ocorrencias ocorrencia) {
+		ocorrenciasVinculadas.add(ocorrencia);
+	}
+	
+	public void adicionaCobertura(Coberturas cobertura) {
+		coberturasVinculadas.add(cobertura);
+	}
+	
 
 	public Integer getCtoInt() {
 		return ctoInt;
@@ -42,7 +65,15 @@ public class Vagas {
 	public void setPosto(String posto) {
 		this.posto = posto;
 	}
+	
+	public String getCargo() {
+		return cargo;
+	}
 
+	public void setCargo(String cargo) {
+		this.cargo = cargo;
+	}
+	
 	public Double getValor() {
 		return valor;
 	}
@@ -61,13 +92,13 @@ public class Vagas {
 
 	@Override
 	public String toString() {
-		return "QuadroLotacao [ctoInt=" + ctoInt + ", rateio=" + rateio + ", posto=" + posto
+		return "QuadroLotacao [ctoInt=" + ctoInt + ", rateio=" + rateio + ", posto=" + posto + ", cargo=" + cargo
 				+ ", valor=" + valor + ", qtdPosto=" + qtdPosto + "]";
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(ctoInt, posto, qtdPosto, rateio, valor);
+		return Objects.hash(ctoInt, posto, cargo, qtdPosto, rateio, valor);
 	}
 
 	@Override
@@ -81,7 +112,7 @@ public class Vagas {
 		Vagas other = (Vagas) obj;
 		return  Objects.equals(ctoInt, other.ctoInt)
 				&& Objects.equals(posto, other.posto) && Objects.equals(qtdPosto, other.qtdPosto)
-				&& Objects.equals(rateio, other.rateio) && Objects.equals(valor, other.valor);
+				&& Objects.equals(rateio, other.rateio) && Objects.equals(valor, other.valor) && Objects.equals(cargo, other.cargo);
 	}
 	
 	

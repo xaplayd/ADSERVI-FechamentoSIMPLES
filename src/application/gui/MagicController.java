@@ -124,6 +124,10 @@ public class MagicController {
 
 	@FXML
 	public void btnExecutarOnAction(ActionEvent event) {
+		
+		executar.consolidar(tfVagas.getText(), tfLotacao.getText(), tfOcorrencias.getText(), tfCoberturas.getText(), tfSalvarEm.getText());
+
+		/*
 
 		if (tfVagas.getText() == "" && tfLotacao.getText() == "" && tfOcorrencias.getText() == ""
 				&& tfCoberturas.getText() == "") {
@@ -141,7 +145,7 @@ public class MagicController {
 
 		} else {
 			executar.consolidar(tfVagas.getText(), tfLotacao.getText(), tfOcorrencias.getText(), tfCoberturas.getText(), tfSalvarEm.getText());
-		}
+		}*/
 
 	}
 
