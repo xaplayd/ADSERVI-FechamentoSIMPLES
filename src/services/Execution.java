@@ -1,20 +1,24 @@
 package services;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
+import java.util.Scanner;
+
 import entities.Coberturas;
 import entities.Lotacao;
 import entities.Ocorrencias;
 import entities.Vagas;
+import javafx.scene.control.Alert;
 
 public class Execution {
 
@@ -25,6 +29,8 @@ public class Execution {
 	DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
 	List<Lotacao> lotacoesNaoAlocadas = new ArrayList<Lotacao>();
+	List<Ocorrencias> ocorrenciasNaoAlocadas = new ArrayList<Ocorrencias>();
+	List<Coberturas> coberturasNaoAlocadas = new ArrayList<Coberturas>();
 
 	/* FIM UTILIZAVEIS */
 
@@ -68,24 +74,6 @@ public class Execution {
 		return listaDeVagas;
 	}
 
-	/*
-	 * public String escreveVagas(String caminhoVagas, String caminhoSalvarEm) {
-	 * 
-	 * File arquivoTemporarioVagas = new File(caminhoSalvarEm + ".crypt");
-	 * 
-	 * try (PrintWriter pw = new PrintWriter(new BufferedWriter(new
-	 * FileWriter(arquivoTemporarioVagas, true)))) {
-	 * 
-	 * List<Vagas> listaVagas = lerVagas(caminhoVagas);
-	 * 
-	 * for (Vagas x : listaVagas) { Integer ctoInt = x.getCtoInt(); String rateio =
-	 * x.getRateio(); String posto = x.getPosto(); String cargo = x.getCargo();
-	 * Double valor = x.getValor();
-	 * 
-	 * pw.print(ctoInt + ";" + rateio + ";" + posto + ";" + cargo + ";" + valor +
-	 * "\n"); } pw.flush(); pw.close(); } catch (IOException e) { e.getMessage(); }
-	 * return arquivoTemporarioVagas.getAbsolutePath(); }
-	 */
 	public List lerLotacao(String caminho, List vagas) {
 		List<Vagas> tempList = vagas;
 		String tempCaminhoQuadroLotacao = caminho;
@@ -101,10 +89,10 @@ public class Execution {
 				// posto
 				String coluna2 = fields[2];
 				// matricula
-				String coluna5 = fields[5].replace(",00", "");
-				String colunaCinco = coluna5.replace(".", "");
+				String coluna5 = fields[5].replace(",00", "").replace(".", "");
+
 				if (coluna0 == "" && coluna1.length() >= postConfere && coluna2 != ""
-						&& colunaCinco.length() == matConfere) {
+						&& coluna5.length() == matConfere) {
 					// nome
 					String coluna6 = fields[6];
 					// admissao
@@ -123,14 +111,14 @@ public class Execution {
 					Integer z = 0;
 					for (Vagas y : tempList) {
 						if (coluna2.compareTo(y.getPosto()) == 0 && y.getColaborador() == null && z == 0) {
-							y.setColaborador(new Lotacao(coluna2, colunaCinco, coluna6, coluna9, coluna11, coluna13,
+							y.setColaborador(new Lotacao(coluna2, coluna5, coluna6, coluna9, coluna11, coluna13,
 									coluna16, coluna18, coluna20));
 							i++;
 							z++;
 						}
 					}
 					if (i == 0) {
-						lotacoesNaoAlocadas.add(new Lotacao(coluna2, colunaCinco, coluna6, coluna9, coluna11, coluna13,
+						lotacoesNaoAlocadas.add(new Lotacao(coluna2, coluna5, coluna6, coluna9, coluna11, coluna13,
 								coluna16, coluna18, coluna20));
 					}
 					i = 0;
@@ -164,7 +152,7 @@ public class Execution {
 				String[] fields = ocorrencia.split(";", -1);
 
 				// matricula
-				String coluna0 = fields[0];
+				String coluna0 = fields[0].replace(",00", "").replace(".", "");
 
 				if (coluna0.length() == matConfere) {
 
@@ -323,8 +311,49 @@ public class Execution {
 	public void consolidar(String caminhoVagas, String caminhoLotacao, String caminhoOcorrencias,
 			String caminhoCoberturas, String caminhoSalvarEm) {
 
-		lerLotacao(caminhoLotacao, lerVagas(caminhoVagas));
+		escreve(lerLotacao(caminhoLotacao, lerVagas(caminhoVagas)), caminhoSalvarEm);
 
 	}
 	/* FIM DA ESCRITA CONSOLIDADA */
+
+	public void escreve(List listaRecebidaAlocados, String caminhoSalvarEm) {
+
+		List<Vagas> tempList = listaRecebidaAlocados;
+
+		File arquivoNovo = new File(caminhoSalvarEm + ".crypt");
+
+		try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(arquivoNovo, true)))) {
+
+			pw.print(";;QUADRO EFETIVO" + "\n");
+			pw.print("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
+
+			for (Vagas x : tempList) {
+				if (x.getColaborador() != null) {
+					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+							+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
+							+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
+							+ x.getColaborador().getEscala() + "\n");
+				} else {
+					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+							+ x.getValor() + ";" + "\n");
+
+				}
+			}
+
+			pw.print("\n\n");
+			pw.print(";;QUADRO NÃO ALOCADO \n");
+			for (Lotacao x : lotacoesNaoAlocadas) {
+				pw.print(";;" + x.getPosto() + ";;;" + x.getMatricula() + ";" + x.getNome() + ";" + x.getAdmissao()
+						+ ";" + x.getEscala() + "\n");
+			}
+
+			pw.flush();
+			pw.close();
+
+		} catch (IOException e) {
+			e.getMessage();
+		}
+
+	}
+
 }

@@ -60,7 +60,7 @@ public class MagicController {
 	public void btnVagasOnAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o arquivo das VAGAS");
-		fc.setInitialDirectory(new File("c:\\"));
+		fc.setInitialDirectory(new File("C:\\WORKSPACE\\ws-eclipse\\magic\\src\\examples"));
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV File", "*.csv"));
 		File selectedFile = fc.showOpenDialog(new Stage());
 
@@ -73,7 +73,7 @@ public class MagicController {
 	public void btnLotacaoOnAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o arquivo dos COLABORADORES VINCULADOS");
-		fc.setInitialDirectory(new File("c:\\"));
+		fc.setInitialDirectory(new File("C:\\WORKSPACE\\ws-eclipse\\magic\\src\\examples"));
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV File", "*.csv"));
 		File selectedFile = fc.showOpenDialog(new Stage());
 
@@ -86,7 +86,7 @@ public class MagicController {
 	public void btnOcorrenciasOnAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o arquivo das OCORRENCIAS");
-		fc.setInitialDirectory(new File("c:\\"));
+		fc.setInitialDirectory(new File("C:\\WORKSPACE\\ws-eclipse\\magic\\src\\examples"));
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV File", "*.csv"));
 		File selectedFile = fc.showOpenDialog(new Stage());
 
@@ -99,7 +99,7 @@ public class MagicController {
 	public void btnCoberturasOnAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Escolha o arquivo das COBERTURAS");
-		fc.setInitialDirectory(new File("c:\\"));
+		fc.setInitialDirectory(new File("C:\\WORKSPACE\\ws-eclipse\\magic\\src\\examples"));
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV File", "*.csv"));
 		File selectedFile = fc.showOpenDialog(new Stage());
 
@@ -112,7 +112,7 @@ public class MagicController {
 	public void btnSalvarEmOnAction(ActionEvent event) {
 		FileChooser fc = new FileChooser();
 		fc.setTitle("Salvar em");
-		fc.setInitialDirectory(new File("c:\\"));
+		fc.setInitialDirectory(new File("C:\\WORKSPACE\\ws-eclipse\\magic\\src\\examples"));
 		fc.getExtensionFilters().addAll(new FileChooser.ExtensionFilter("CSV File", "*.csv"));
 		File selectedFile = fc.showSaveDialog(new Stage());
 
