@@ -169,11 +169,11 @@ public class Ocorrencias {
 	
 	@Override
 	public String toString() {
-		return "Ocorrencia [matricula=" + matricula + ", nome=" + nome + ", cargo=" + cargo + ", admissao=" + admissao
-				+ ", inicioOcorrenciaData=" + inicioOcorrenciaData + ", inicioOcorrenciaHora=" + inicioOcorrenciaHora
-				+ ", codEvento=" + codEvento + ", descEvento=" + descEvento + ", fimOcorrenciaData=" + fimOcorrenciaData
-				+ ", fimOcorrenciaHora=" + fimOcorrenciaHora + ", obs=" + obs + ", inicioPeriodoAquisitivo="
-				+ inicioPeriodoAquisitivo + ", fimPeriodoAquisitivo=" + fimPeriodoAquisitivo + "]";
+		
+		
+		
+		
+		return "";
 	}
 
 	@Override

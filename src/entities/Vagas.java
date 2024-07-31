@@ -1,5 +1,6 @@
 package entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -12,8 +13,8 @@ public class Vagas {
 	private Double valor;
 	private Integer qtdPosto;
 	private Lotacao colaboradorVinculado;
-	private List<Ocorrencias> ocorrenciasVinculadas;
-	private List<Coberturas> coberturasVinculadas;
+	private List<Ocorrencias> ocorrenciasVinculadas = new ArrayList<Ocorrencias>();
+	private List<Coberturas> coberturasVinculadas = new ArrayList<Coberturas>();
 	
 	public Vagas(Integer ctoInt, String rateio, String posto, String cargo, Double valor, Integer qtdPosto) {
 
@@ -35,6 +36,9 @@ public class Vagas {
 	
 	public void adicionaOcorrencia(Ocorrencias ocorrencia) {
 		ocorrenciasVinculadas.add(ocorrencia);
+	}
+	public List<Ocorrencias> getOcorrencia() {
+		return ocorrenciasVinculadas;
 	}
 	
 	public void adicionaCobertura(Coberturas cobertura) {

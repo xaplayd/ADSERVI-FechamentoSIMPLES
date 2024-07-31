@@ -137,6 +137,8 @@ public class Execution {
 	public List lerOcorrencias(String caminho, List vagasElotacoes) {
 
 		String tempCaminho = caminho;
+		
+		List<Vagas> tempList = vagasElotacoes;
 
 		List<Ocorrencias> listaDeOcorrencias = new ArrayList<Ocorrencias>();
 
@@ -170,7 +172,7 @@ public class Execution {
 
 					// inicioOcorrenciaHora
 					String coluna10 = fields[10];
-					if (coluna10 == "00:00") {
+					if (coluna10.compareTo("00:00") == 0) {
 						coluna10 = null;
 					}
 
@@ -191,7 +193,7 @@ public class Execution {
 
 					// fimOcorrenciaHora
 					String coluna16 = fields[16];
-					if (coluna16 == "00:00") {
+					if (coluna16.compareTo("00:00") == 0) {
 						coluna16 = null;
 					}
 
@@ -203,9 +205,27 @@ public class Execution {
 
 					// fimPeriodoAquisitivo
 					String coluna22 = fields[22];
-
-					listaDeOcorrencias.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
+					
+					for(Vagas x : tempList) {
+						if(x.getColaborador() != null && x.getColaborador().getMatricula().compareTo(coluna0) == 0) {
+							x.adicionaOcorrencia(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
 							coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
+						}else {
+							ocorrenciasNaoAlocadas.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
+							coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
+							
+						}
+						
+					}
+
+					
+					
+					//listaDeOcorrencias.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
+					//		coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
+					
+					
+					
+					
 				}
 
 				ocorrencia = tblOcorrencias.readLine();
@@ -214,7 +234,7 @@ public class Execution {
 		} catch (IOException e) {
 			e.getMessage();
 		}
-		return listaDeOcorrencias;
+		return tempList;
 	}
 	/* FIM DA LEITURA DAS OCORRENCIAS */
 
@@ -311,7 +331,7 @@ public class Execution {
 	public void consolidar(String caminhoVagas, String caminhoLotacao, String caminhoOcorrencias,
 			String caminhoCoberturas, String caminhoSalvarEm) {
 
-		escreve(lerLotacao(caminhoLotacao, lerVagas(caminhoVagas)), caminhoSalvarEm);
+		escreve(lerOcorrencias(caminhoOcorrencias,(lerLotacao(caminhoLotacao, lerVagas(caminhoVagas)))), caminhoSalvarEm);
 
 	}
 	/* FIM DA ESCRITA CONSOLIDADA */
@@ -328,11 +348,32 @@ public class Execution {
 			pw.print("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
 
 			for (Vagas x : tempList) {
+				
+				
 				if (x.getColaborador() != null) {
+					
+					if(x.getOcorrencia() != null) {
+						String descOcorrencias = "";
+						for(Ocorrencias y : x.getOcorrencia()) {
+							descOcorrencias += y.toString();
+							descOcorrencias += " || ";
+						}
+						pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+								+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
+								+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
+								+ x.getColaborador().getEscala() + ";" + descOcorrencias + "\n");
+						
+						
+					}else {
+					
 					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
 							+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
 							+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
-							+ x.getColaborador().getEscala() + "\n");
+							+ x.getColaborador().getEscala() + ";" + "\n");
+					}
+				
+					
+			
 				} else {
 					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
 							+ x.getValor() + ";" + "\n");
