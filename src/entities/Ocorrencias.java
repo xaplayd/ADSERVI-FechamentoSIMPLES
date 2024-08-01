@@ -170,10 +170,23 @@ public class Ocorrencias {
 	@Override
 	public String toString() {
 		
+		String descricao = "";
+		
+		if(inicioOcorrenciaData.compareTo(fimOcorrenciaData) == 0) {
+			descricao += "Em " + inicioOcorrenciaData + " " + descEvento;
+		}
+		
+		if(inicioOcorrenciaData.compareTo(fimOcorrenciaData) != 0) {
+			descricao += "De " + inicioOcorrenciaData + " a " + fimOcorrenciaData + " " + descEvento;
+		}
+		
+		if(inicioOcorrenciaHora != null && fimOcorrenciaHora != null) {
+			descricao += " das " + inicioOcorrenciaHora + " as " + fimOcorrenciaHora;
+			
+		}
 		
 		
-		
-		return "";
+		return descricao;
 	}
 
 	@Override

@@ -3,10 +3,14 @@ package services;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
@@ -38,7 +42,7 @@ public class Execution {
 		String tempCaminhoQuadroVagas = caminho;
 		List<Vagas> listaDeVagas = new ArrayList<Vagas>();
 		File arquivoQuadroVagas = new File(tempCaminhoQuadroVagas);
-		try (BufferedReader tblQuadroVagas = new BufferedReader(new FileReader(arquivoQuadroVagas))) {
+		try (BufferedReader tblQuadroVagas = new BufferedReader(new FileReader(arquivoQuadroVagas, StandardCharsets.ISO_8859_1))) {
 			String vaga = tblQuadroVagas.readLine();
 			while (vaga != null) {
 				String[] fields = vaga.split(";", -1);
@@ -78,7 +82,7 @@ public class Execution {
 		List<Vagas> tempList = vagas;
 		String tempCaminhoQuadroLotacao = caminho;
 		File arquivoQuadroLotacao = new File(tempCaminhoQuadroLotacao);
-		try (BufferedReader tblQuadroLotacao = new BufferedReader(new FileReader(arquivoQuadroLotacao))) {
+		try (BufferedReader tblQuadroLotacao = new BufferedReader(new FileReader(arquivoQuadroLotacao, StandardCharsets.ISO_8859_1))) {
 			String lotacao = tblQuadroLotacao.readLine();
 			while (lotacao != null) {
 				String[] fields = lotacao.split(";", -1);
@@ -146,7 +150,7 @@ public class Execution {
 
 		matConfere = 9;
 
-		try (BufferedReader tblOcorrencias = new BufferedReader(new FileReader(arquivoOcorrencias))) {
+		try (BufferedReader tblOcorrencias = new BufferedReader(new FileReader(arquivoOcorrencias, StandardCharsets.ISO_8859_1))) {
 			String ocorrencia = tblOcorrencias.readLine();
 
 			while (ocorrencia != null) {
@@ -247,7 +251,7 @@ public class Execution {
 
 		File arquivoCoberturas = new File(tempCaminho);
 
-		try (BufferedReader tblCoberturas = new BufferedReader(new FileReader(arquivoCoberturas))) {
+		try (BufferedReader tblCoberturas = new BufferedReader(new FileReader(arquivoCoberturas, StandardCharsets.ISO_8859_1))) {
 			String cobertura = tblCoberturas.readLine();
 
 			while (cobertura != null) {
@@ -341,59 +345,65 @@ public class Execution {
 		List<Vagas> tempList = listaRecebidaAlocados;
 
 		File arquivoNovo = new File(caminhoSalvarEm + ".crypt");
+		try{BufferedWriter pw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoNovo), StandardCharsets.ISO_8859_1));
+		pw.write(";;QUADRO EFETIVO" + "\n");
+		pw.write("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
 
-		try (PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(arquivoNovo, true)))) {
-
-			pw.print(";;QUADRO EFETIVO" + "\n");
-			pw.print("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
-
-			for (Vagas x : tempList) {
+		for (Vagas x : tempList) {
+			
+			
+			if (x.getColaborador() != null) {
 				
-				
-				if (x.getColaborador() != null) {
-					
-					if(x.getOcorrencia() != null) {
-						String descOcorrencias = "";
-						for(Ocorrencias y : x.getOcorrencia()) {
+				if(x.getOcorrencia() != null) {
+					String descOcorrencias = "";
+					for(Ocorrencias y : x.getOcorrencia()) {
+						
+						if(descOcorrencias == "") {
 							descOcorrencias += y.toString();
-							descOcorrencias += " || ";
+						} else {
+						descOcorrencias += " || ";
+						descOcorrencias += y.toString();
 						}
-						pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
-								+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
-								+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
-								+ x.getColaborador().getEscala() + ";" + descOcorrencias + "\n");
 						
-						
-					}else {
-					
-					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+					}
+					pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
 							+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
 							+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
-							+ x.getColaborador().getEscala() + ";" + "\n");
-					}
-				
+							+ x.getColaborador().getEscala() + ";" + descOcorrencias + "\n");
 					
-			
-				} else {
-					pw.print(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
-							+ x.getValor() + ";" + "\n");
-
+					
+				}else {
+				
+				pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+						+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
+						+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
+						+ x.getColaborador().getEscala() + ";" + "\n");
 				}
+			
+				
+		
+			} else {
+				pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+						+ x.getValor() + ";" + "\n");
+
 			}
-
-			pw.print("\n\n");
-			pw.print(";;QUADRO NÃO ALOCADO \n");
-			for (Lotacao x : lotacoesNaoAlocadas) {
-				pw.print(";;" + x.getPosto() + ";;;" + x.getMatricula() + ";" + x.getNome() + ";" + x.getAdmissao()
-						+ ";" + x.getEscala() + "\n");
-			}
-
-			pw.flush();
-			pw.close();
-
-		} catch (IOException e) {
-			e.getMessage();
 		}
+
+		pw.write("\n\n");
+		pw.write(";;QUADRO NÃO ALOCADO \n");
+		for (Lotacao x : lotacoesNaoAlocadas) {
+			pw.write(";;" + x.getPosto() + ";;;" + x.getMatricula() + ";" + x.getNome() + ";" + x.getAdmissao()
+					+ ";" + x.getEscala() + "\n");
+		}
+
+		pw.flush();
+		pw.close();
+
+	} catch (IOException e) {
+		e.getMessage();
+	}
+		
+	
 
 	}
 
