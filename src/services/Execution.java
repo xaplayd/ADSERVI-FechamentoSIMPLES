@@ -32,7 +32,7 @@ public class Execution {
 	Integer postConfere = 14;
 	DateTimeFormatter formatoData = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 	DateTimeFormatter formatoHora = DateTimeFormatter.ofPattern("HH:mm");
-	List<Lotacao> lotacoesNaoAlocadas = new ArrayList<Lotacao>();
+	List<Vagas> lotacoesNaoAlocadas = new ArrayList<Vagas>();
 	List<Ocorrencias> ocorrenciasNaoAlocadas = new ArrayList<Ocorrencias>();
 	List<Coberturas> coberturasNaoAlocadas = new ArrayList<Coberturas>();
 
@@ -42,7 +42,8 @@ public class Execution {
 		String tempCaminhoQuadroVagas = caminho;
 		List<Vagas> listaDeVagas = new ArrayList<Vagas>();
 		File arquivoQuadroVagas = new File(tempCaminhoQuadroVagas);
-		try (BufferedReader tblQuadroVagas = new BufferedReader(new FileReader(arquivoQuadroVagas, StandardCharsets.ISO_8859_1))) {
+		try (BufferedReader tblQuadroVagas = new BufferedReader(
+				new FileReader(arquivoQuadroVagas, StandardCharsets.ISO_8859_1))) {
 			String vaga = tblQuadroVagas.readLine();
 			while (vaga != null) {
 				String[] fields = vaga.split(";", -1);
@@ -82,7 +83,8 @@ public class Execution {
 		List<Vagas> tempList = vagas;
 		String tempCaminhoQuadroLotacao = caminho;
 		File arquivoQuadroLotacao = new File(tempCaminhoQuadroLotacao);
-		try (BufferedReader tblQuadroLotacao = new BufferedReader(new FileReader(arquivoQuadroLotacao, StandardCharsets.ISO_8859_1))) {
+		try (BufferedReader tblQuadroLotacao = new BufferedReader(
+				new FileReader(arquivoQuadroLotacao, StandardCharsets.ISO_8859_1))) {
 			String lotacao = tblQuadroLotacao.readLine();
 			while (lotacao != null) {
 				String[] fields = lotacao.split(";", -1);
@@ -98,7 +100,7 @@ public class Execution {
 				if (coluna0 == "" && coluna1.length() >= postConfere && coluna2 != ""
 						&& coluna5.length() == matConfere) {
 					// nome
-					String coluna6 = fields[6];
+					String coluna6 = fields[6].replace(" (Afastado)", "");
 					// admissao
 					String coluna9 = fields[9];
 					// situcao
@@ -122,8 +124,11 @@ public class Execution {
 						}
 					}
 					if (i == 0) {
-						lotacoesNaoAlocadas.add(new Lotacao(coluna2, coluna5, coluna6, coluna9, coluna11, coluna13,
+						Vagas tempVaga = new Vagas(null, null, null, null, null, null);
+						tempVaga.setColaborador(new Lotacao(coluna2, coluna5, coluna6, coluna9, coluna11, coluna13,
 								coluna16, coluna18, coluna20));
+						lotacoesNaoAlocadas.add(tempVaga);
+
 					}
 					i = 0;
 					lotacao = tblQuadroLotacao.readLine();
@@ -141,16 +146,15 @@ public class Execution {
 	public List lerOcorrencias(String caminho, List vagasElotacoes) {
 
 		String tempCaminho = caminho;
-		
-		List<Vagas> tempList = vagasElotacoes;
 
-		List<Ocorrencias> listaDeOcorrencias = new ArrayList<Ocorrencias>();
+		List<Vagas> tempList = vagasElotacoes;
 
 		File arquivoOcorrencias = new File(tempCaminho);
 
 		matConfere = 9;
 
-		try (BufferedReader tblOcorrencias = new BufferedReader(new FileReader(arquivoOcorrencias, StandardCharsets.ISO_8859_1))) {
+		try (BufferedReader tblOcorrencias = new BufferedReader(
+				new FileReader(arquivoOcorrencias, StandardCharsets.ISO_8859_1))) {
 			String ocorrencia = tblOcorrencias.readLine();
 
 			while (ocorrencia != null) {
@@ -209,27 +213,40 @@ public class Execution {
 
 					// fimPeriodoAquisitivo
 					String coluna22 = fields[22];
-					
-					for(Vagas x : tempList) {
-						if(x.getColaborador() != null && x.getColaborador().getMatricula().compareTo(coluna0) == 0) {
+
+					for (Vagas x : tempList) {
+						if (x.getColaborador() != null && x.getColaborador().getMatricula().compareTo(coluna0) == 0) {
 							x.adicionaOcorrencia(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
-							coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
-						}else {
-							ocorrenciasNaoAlocadas.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
-							coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
-							
+									coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
+						} else {
+							for (Vagas y : lotacoesNaoAlocadas) {
+								if (y.getColaborador() != null
+										&& y.getColaborador().getMatricula().compareTo(coluna0) == 0) {
+									y.adicionaOcorrencia(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9,
+											coluna10, coluna11, coluna13, coluna15, coluna16, coluna17, coluna21,
+											coluna22));
+								} else {
+									
+									for(Ocorrencias z : ocorrenciasNaoAlocadas) {
+										if(z.equals(new Ocorrencias(coluna0, coluna1, coluna5, coluna8,
+											coluna9, coluna10, coluna11, coluna13, coluna15, coluna16, coluna17,
+											coluna21, coluna22))) {
+											
+										}else {
+											ocorrenciasNaoAlocadas.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8,
+													coluna9, coluna10, coluna11, coluna13, coluna15, coluna16, coluna17,
+													coluna21, coluna22));
+										}
+										
+									}
+									
+								}
+							}
+
 						}
-						
+
 					}
 
-					
-					
-					//listaDeOcorrencias.add(new Ocorrencias(coluna0, coluna1, coluna5, coluna8, coluna9, coluna10,
-					//		coluna11, coluna13, coluna15, coluna16, coluna17, coluna21, coluna22));
-					
-					
-					
-					
 				}
 
 				ocorrencia = tblOcorrencias.readLine();
@@ -243,15 +260,16 @@ public class Execution {
 	/* FIM DA LEITURA DAS OCORRENCIAS */
 
 	/* INICIO DA LEITURA DAS COBERTURAS */
-	public List lerCoberturas(String caminho) {
+	public List lerCoberturas(String caminho, List vagasElotacoesEocorencias) {
 
 		String tempCaminho = caminho;
 
-		List<Coberturas> listaDeCoberturas = new ArrayList<Coberturas>();
+		List<Vagas> tempList = vagasElotacoesEocorencias;
 
 		File arquivoCoberturas = new File(tempCaminho);
 
-		try (BufferedReader tblCoberturas = new BufferedReader(new FileReader(arquivoCoberturas, StandardCharsets.ISO_8859_1))) {
+		try (BufferedReader tblCoberturas = new BufferedReader(
+				new FileReader(arquivoCoberturas, StandardCharsets.ISO_8859_1))) {
 			String cobertura = tblCoberturas.readLine();
 
 			while (cobertura != null) {
@@ -311,8 +329,30 @@ public class Execution {
 					// chPrevisto
 					String coluna22 = fields[22];
 
-					listaDeCoberturas.add(new Coberturas(coluna0, coluna2, coluna3, coluna4, coluna5, coluna8, coluna11,
-							coluna12, coluna14, coluna15, coluna20, coluna21, coluna22));
+					for (Vagas x : tempList) {
+						if (x.getColaborador() != null && coluna11 != null
+								&& x.getColaborador().getMatricula().compareTo(coluna11) == 0) {
+							x.adicionaCobertura(new Coberturas(coluna0, coluna2, coluna3, coluna4, coluna5, coluna8,
+									coluna11, coluna12, coluna14, coluna15, coluna20, coluna21, coluna22));
+						} else {
+							for (Vagas y : lotacoesNaoAlocadas) {
+								if (y.getColaborador() != null && coluna11 != null
+										&& y.getColaborador().getMatricula().compareTo(coluna11) == 0) {
+									y.adicionaCobertura(new Coberturas(coluna0, coluna2, coluna3, coluna4, coluna5,
+											coluna8, coluna11, coluna12, coluna14, coluna15, coluna20, coluna21,
+											coluna22));
+
+								}
+							}
+
+						}
+
+					}
+
+					if (coluna11 == null) {
+						coberturasNaoAlocadas.add(new Coberturas(coluna0, coluna2, coluna3, coluna4, coluna5, coluna8,
+								coluna11, coluna12, coluna14, coluna15, coluna20, coluna21, coluna22));
+					}
 
 					cobertura = tblCoberturas.readLine();
 				}
@@ -324,10 +364,7 @@ public class Execution {
 			e.getMessage();
 		}
 
-		for (Coberturas x : listaDeCoberturas) {
-			System.out.println(x);
-		}
-		return listaDeCoberturas;
+		return tempList;
 	}
 	/* FIM DA LEITURA DAS COBERTURAS */
 
@@ -335,7 +372,9 @@ public class Execution {
 	public void consolidar(String caminhoVagas, String caminhoLotacao, String caminhoOcorrencias,
 			String caminhoCoberturas, String caminhoSalvarEm) {
 
-		escreve(lerOcorrencias(caminhoOcorrencias,(lerLotacao(caminhoLotacao, lerVagas(caminhoVagas)))), caminhoSalvarEm);
+		escreve(lerCoberturas(caminhoCoberturas,
+				lerOcorrencias(caminhoOcorrencias, (lerLotacao(caminhoLotacao, lerVagas(caminhoVagas))))),
+				caminhoSalvarEm);
 
 	}
 	/* FIM DA ESCRITA CONSOLIDADA */
@@ -345,65 +384,116 @@ public class Execution {
 		List<Vagas> tempList = listaRecebidaAlocados;
 
 		File arquivoNovo = new File(caminhoSalvarEm + ".crypt");
-		try{BufferedWriter pw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(arquivoNovo), StandardCharsets.ISO_8859_1));
-		pw.write(";;QUADRO EFETIVO" + "\n");
-		pw.write("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
+		try {
+			BufferedWriter pw = new BufferedWriter(
+					new OutputStreamWriter(new FileOutputStream(arquivoNovo), StandardCharsets.ISO_8859_1));
+			pw.write(";;QUADRO EFETIVO" + "\n");
+			pw.write("CTO INT; RATEIO; POSTO; CARGO; VALOR; MATRICULA; NOME; ADMISSÃO; ESCALA; \n");
 
-		for (Vagas x : tempList) {
-			
-			
-			if (x.getColaborador() != null) {
-				
-				if(x.getOcorrencia() != null) {
+			for (Vagas x : tempList) {
+
+				if (x.getColaborador() != null) {
+
+					pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+							+ x.getValor().toString().replace(".", ",") + ";" + x.getColaborador().getMatricula() + ";"
+							+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
+							+ x.getColaborador().getEscala());
+
+					if (x.getOcorrencia() != null) {
+						String descOcorrencias = "";
+
+						for (Ocorrencias y : x.getOcorrencia()) {
+
+							if (descOcorrencias == "") {
+								descOcorrencias += y.toString();
+							} else {
+								descOcorrencias += " || ";
+								descOcorrencias += y.toString();
+							}
+						}
+						pw.write(";" + descOcorrencias);
+					}
+
+					if (x.getCoberturas() != null) {
+						String descCobertura = "";
+						for (Coberturas y : x.getCoberturas()) {
+
+							if (descCobertura == "") {
+								descCobertura += y.toString();
+							} else {
+								descCobertura += " || ";
+								descCobertura += y.toString();
+							}
+						}
+						pw.write(";" + descCobertura + "\n");
+					} else {
+						pw.write("\n");
+					}
+
+				} else {
+					pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
+							+ x.getValor().toString().replace(".", ",") + ";" + "\n");
+
+				}
+			}
+
+			pw.write("\n\n");
+			pw.write(";;QUADRO NÃO ALOCADO \n");
+			for (Vagas x : lotacoesNaoAlocadas) {
+				pw.write(";;" + x.getColaborador().getPosto() + ";;;" + x.getColaborador().getMatricula() + ";"
+						+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
+						+ x.getColaborador().getEscala());
+
+				if (x.getOcorrencia() != null) {
 					String descOcorrencias = "";
-					for(Ocorrencias y : x.getOcorrencia()) {
-						
-						if(descOcorrencias == "") {
+
+					for (Ocorrencias y : x.getOcorrencia()) {
+
+						if (descOcorrencias == "") {
 							descOcorrencias += y.toString();
 						} else {
-						descOcorrencias += " || ";
-						descOcorrencias += y.toString();
+							descOcorrencias += " || ";
+							descOcorrencias += y.toString();
 						}
-						
 					}
-					pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
-							+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
-							+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
-							+ x.getColaborador().getEscala() + ";" + descOcorrencias + "\n");
-					
-					
-				}else {
-				
-				pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
-						+ x.getValor() + ";" + x.getColaborador().getMatricula() + ";"
-						+ x.getColaborador().getNome() + ";" + x.getColaborador().getAdmissao() + ";"
-						+ x.getColaborador().getEscala() + ";" + "\n");
+					pw.write(";" + descOcorrencias);
 				}
-			
-				
-		
-			} else {
-				pw.write(x.getCtoInt() + ";" + x.getRateio() + ";" + x.getPosto() + ";" + x.getCargo() + ";"
-						+ x.getValor() + ";" + "\n");
+
+				if (x.getCoberturas() != null) {
+					String descCobertura = "";
+					for (Coberturas y : x.getCoberturas()) {
+
+						if (descCobertura == "") {
+							descCobertura += y.toString();
+						} else {
+							descCobertura += " || ";
+							descCobertura += y.toString();
+						}
+					}
+					pw.write(";" + descCobertura + "\n");
+				} else {
+					pw.write("\n");
+				}
 
 			}
+
+			pw.write("\n\n");
+			pw.write(";;FALTAS NÃO ALOCADAS \n");
+			for (Ocorrencias x : ocorrenciasNaoAlocadas) {
+				pw.write(x.getMatricula() + ";" + x.getNome() + ";" + x.toString() + "\n");
+			}
+			pw.write("\n\n");
+			pw.write(";;COBERTURAS NÃO ALOCADAS \n");
+			for (Coberturas x : coberturasNaoAlocadas) {
+				pw.write(x.toString() + ";" + x.getPostoCobertura() + ";");
+			}
+
+			pw.flush();
+			pw.close();
+
+		} catch (IOException e) {
+			e.getMessage();
 		}
-
-		pw.write("\n\n");
-		pw.write(";;QUADRO NÃO ALOCADO \n");
-		for (Lotacao x : lotacoesNaoAlocadas) {
-			pw.write(";;" + x.getPosto() + ";;;" + x.getMatricula() + ";" + x.getNome() + ";" + x.getAdmissao()
-					+ ";" + x.getEscala() + "\n");
-		}
-
-		pw.flush();
-		pw.close();
-
-	} catch (IOException e) {
-		e.getMessage();
-	}
-		
-	
 
 	}
 

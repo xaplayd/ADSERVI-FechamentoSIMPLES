@@ -142,11 +142,17 @@ public class Coberturas {
 
 	@Override
 	public String toString() {
-		return "Coberturas [dataInicio=" + dataInicio + ", dataFim=" + dataFim + ", tipo=" + tipo
-				+ ", matriculaCobertura=" + matriculaCobertura + ", nomeCobertura=" + nomeCobertura
-				+ ", postoCobertura=" + postoCobertura + ", matriculaFaltante=" + matriculaFaltante + ", nomeFaltante="
-				+ nomeFaltante + ", cliente=" + cliente + ", postoFaltante=" + postoFaltante + ", recursoCobertura="
-				+ recursoCobertura + ", horarioPrevisto=" + horarioPrevisto + ", chPrevista=" + chPrevista + "]";
+		String descricao = "";
+		
+			if(dataInicio.compareTo(dataFim) == 0) {
+				descricao += "Cob em " + dataInicio + " por " + nomeCobertura + " - " + matriculaCobertura;
+			}
+			
+			if(dataInicio.compareTo(dataFim) != 0) {
+				descricao += "Cob de " + dataInicio + " a " + dataFim + " por " + nomeCobertura + " - " + matriculaCobertura;
+			}		
+		
+		return descricao;
 	}
 
 	@Override

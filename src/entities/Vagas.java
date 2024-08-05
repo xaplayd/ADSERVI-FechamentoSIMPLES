@@ -45,6 +45,9 @@ public class Vagas {
 		coberturasVinculadas.add(cobertura);
 	}
 	
+	public List<Coberturas> getCoberturas() {
+		return coberturasVinculadas;
+	}
 
 	public Integer getCtoInt() {
 		return ctoInt;
